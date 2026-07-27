@@ -104,5 +104,4 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USER }}/docker-study-app:latest
-            ${{ secrets.DOCKERHUB_USER }}/docker-study-app:${{ github.ref_name }}
+            ${{ secrets.DOCKERHUB_USER }}/docker-study-app:${{ github.ref_name }}-${{ github.sha }}
