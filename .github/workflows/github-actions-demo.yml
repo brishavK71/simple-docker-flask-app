@@ -6,6 +6,7 @@ name: CI
 on:
   push:
     branches: ["main","release/*"]
+    tags: ["v*"]
   pull_request:
     branches: ["main"]
 
@@ -80,7 +81,7 @@ jobs:
         run: docker compose down -v
 
   publish:
-    name: Publish image to GHCR
+    name: Publish image to docker hub
     runs-on: ubuntu-latest
     needs: build-and-test
     # Study point: this job only runs on version tags (e.g. v1.0.0),
