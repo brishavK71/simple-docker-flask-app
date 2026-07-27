@@ -5,7 +5,7 @@ name: CI
 # before merging, not just after.
 on:
   push:
-    branches: ["main"]
+    branches: ["main","release/*"]
   pull_request:
     branches: ["main"]
 
@@ -86,7 +86,7 @@ jobs:
     # Study point: this job only runs on version tags (e.g. v1.0.0),
     # not on every push -- a common pattern for "build on every commit,
     # publish only on release".
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'release/*')
     permissions:
       contents: read
       packages: write
