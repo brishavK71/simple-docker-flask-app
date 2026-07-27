@@ -93,12 +93,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Log in to GHCR
+      - name: Log in to Dockerhub
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASS }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -106,5 +105,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+            ${{ secrets.DOCKERHUB_USER }}/docker-study-app:latest
+            ${{ secrets.DOCKERHUB_USER }}/docker-study-app:${{ github.ref_name }}
