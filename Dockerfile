@@ -11,11 +11,11 @@ WORKDIR /app
 # --- Environment variables baked into the image -------------------------
 # ENV sets a default. It can still be overridden later at `docker run`
 # time with -e, or by docker-compose.yml's `environment:` / `env_file:`.
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    APP_NAME=Docker Study App \
-    APP_COLOR=#2563eb \
-    APP_ENV=development
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV APP_NAME="Docker Study App"
+ENV APP_COLOR="#2563eb"
+ENV APP_ENV="development"
 
 # --- Dependency layer -----------------------------------------------------
 # Copy ONLY requirements.txt first, then install. Because Docker caches
