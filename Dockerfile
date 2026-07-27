@@ -5,6 +5,9 @@
 # alpine (which uses musl and can trip up some Python wheels).
 FROM python:3.12-slim
 
+LABEL maintainer="devops@something.com"
+LABEL description="A simple Python web app for Docker study purposes"
+LABEL version ="1.0.0"
 # --- Metadata / working directory ---------------------------------------
 WORKDIR /app
 
