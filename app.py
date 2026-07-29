@@ -60,6 +60,11 @@ def health():
     return {"status": "ok"}, 200
 
 
+
+@app.route("/test")
+def test():
+    return {"status": "testing"}, 200
+
 if __name__ == "__main__":
     # host=0.0.0.0 is required -- 127.0.0.1 would only be reachable from
     # inside the container, not from your host machine's browser.
