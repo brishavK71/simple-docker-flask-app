@@ -60,10 +60,8 @@ def health():
     return {"status": "ok"}, 200
 
 @app.route("/workflow")
-def test():
+def workflow():
     return {"status": "workflow tested successfully"}, 200
-
-
 
 @app.route("/test")
 def test():
