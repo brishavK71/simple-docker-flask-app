@@ -37,7 +37,7 @@ pipeline {
         stage('Test Deployment') {
             steps {
                 echo 'Starting application stack with Docker Compose...'
-                sh 'WEB_PORT=8080 docker compose up -d'
+                sh 'WEB_PORT=8081 docker compose up -d'
                 sh 'sleep 10'
                 sh 'docker compose ps'
                 echo 'Running container healthcheck...'
