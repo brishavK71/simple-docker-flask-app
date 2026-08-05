@@ -51,7 +51,6 @@ pipeline {
                 sh 'echo "$DOCKER_CREDS_PSW" | docker login -u "$DOCKER_CREDS_USR" --password-stdin'
                 echo "Pushing image ${DOCKER_CREDS_USR}/${APP_NAME}:${IMAGE_TAG}..."
                 sh "docker push ${DOCKER_CREDS_USR}/${APP_NAME}:${IMAGE_TAG}"
-                sh "docker push ${DOCKER_CREDS_USR}/${APP_NAME}:latest"
             }
         }
     }
