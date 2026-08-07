@@ -64,7 +64,6 @@ pipeline {
                     sh """
                         ssh -o StrictHostKeyChecking=no ${params.ANSIBLE_CONTROLLER_USER}@${params.ANSIBLE_CONTROLLER_IP} '
                             cd simple-docker-flask-app-ansible &&
-                            cd ansible &&
                             ansible-playbook deploy.yml --extra-vars "app_branch=${env.BRANCH_NAME ?: 'main'}"
                         '
                     """
