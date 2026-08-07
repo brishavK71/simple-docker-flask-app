@@ -60,7 +60,7 @@ pipeline {
         }
         stage('Deploy via Ansible') {
             steps {
-                sshagent(credentials: ['ansible-controller-ssh']) {
+                sshagent(credentials: ['ansible-ssh-key']) {
                     sh """
                         ssh -o StrictHostKeyChecking=no ${params.ANSIBLE_CONTROLLER_USER}@${params.ANSIBLE_CONTROLLER_IP} '
                             cd simple-docker-flask-app-ansible &&
