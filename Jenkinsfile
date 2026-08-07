@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'ANSIBLE_CONTROLLER_IP', defaultValue: '', description: 'IP address of the Ansible controller')
+        string(name: 'ANSIBLE_CONTROLLER_USER', defaultValue: 'ubuntu', description: 'SSH user for Ansible controller')
+    }
+
     environment {
         APP_NAME     = 'simple-docker-flask-app'
         DOCKER_CREDS = credentials('docker-creds')
@@ -55,16 +60,17 @@ pipeline {
         }
         stage('Deploy via Ansible') {
             steps {
-                dir('simple-docker-flask-app-ansible') {
-                    sshagent(credentials: ['ansible-ssh-key']) {
-                        sh """
-                            ansible-playbook deploy.yml \\
-                            --extra-vars "app_branch=${env.BRANCH_NAME ?: 'main'}"
-                            """
-                        }
-                    }
+                sshagent(credentials: ['ansible-controller-ssh']) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ${params.ANSIBLE_CONTROLLER_USER}@${params.ANSIBLE_CONTROLLER_IP} '
+                            cd simple-docker-flask-app-ansible &&
+                            git pull &&
+                            cd ansible &&
+                            ansible-playbook deploy.yml --extra-vars "app_branch=${env.BRANCH_NAME ?: 'main'}"
+                        '
+                    """
                 }
-
+            }
         }
     }
 
