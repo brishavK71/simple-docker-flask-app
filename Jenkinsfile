@@ -53,6 +53,19 @@ pipeline {
                 sh "docker push ${DOCKER_CREDS_USR}/${APP_NAME}:${IMAGE_TAG}"
             }
         }
+        stage('Deploy via Ansible') {
+            steps {
+                dir('simple-docker-flask-app-ansible') {
+                    sshagent(credentials: ['ansible-ssh-key']) {
+                        sh """
+                            ansible-playbook deploy.yml \\
+                            --extra-vars "app_branch=${env.BRANCH_NAME ?: 'main'}"
+                            """
+                        }
+                    }
+                }
+
+        }
     }
 
     post {
@@ -70,3 +83,4 @@ pipeline {
         }
     }
 }
+ 
