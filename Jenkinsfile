@@ -1,10 +1,10 @@
 pipeline {
     agent any
 
-    // parameters {
-    //     string(name: 'DEPLOY_VM_IP', defaultValue: '', description: 'IP address of the deployment VM')
-    //     string(name: 'DEPLOY_USER', defaultValue: 'ubuntu', description: 'SSH user for the deployment VM')
-    // }
+    parameters {
+        string(name: 'ANSIBLE_CONTROLLER_IP', defaultValue: '', description: 'IP address of the Ansible controller')
+        string(name: 'ANSIBLE_CONTROLLER_USER', defaultValue: 'ubuntu', description: 'SSH user for Ansible controller')
+    }
 
     environment {
         APP_NAME     = 'simple-docker-flask-app'
@@ -58,7 +58,18 @@ pipeline {
                 sh "docker push ${DOCKER_CREDS_USR}/${APP_NAME}:${IMAGE_TAG}"
             }
         }
-        
+        stage('Deploy via Ansible') {
+            steps {
+                sshagent(credentials: ['ansible-ssh-key']) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ${params.ANSIBLE_CONTROLLER_USER}@${params.ANSIBLE_CONTROLLER_IP} '
+                            cd simple-docker-flask-app-ansible &&
+                            ansible-playbook deploy.yml --extra-vars "app_branch=${env.BRANCH_NAME ?: 'main'}"
+                        '
+                    """
+                }
+            }
+        }
     }
 
     post {
